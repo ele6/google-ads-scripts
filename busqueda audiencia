@@ -1,0 +1,25 @@
+function addSearchAudienceToAdGroup() {
+  var AUDIENCE_LIST_ID = INSERT_AUDIENCE_ID_HERE;
+  var CAMPAIGN_NAME = 'INSERT_CAMPAIGN_NAME_HERE';
+  var ADGROUP_NAME = 'INSERT_ADGROUP_NAME_HERE';
+
+  // Retrieve the ad group.
+  var adGroup = AdWordsApp.adGroups()
+      .withCondition('Name = "' + ADGROUP_NAME + '"')
+      .withCondition('CampaignName = "' + CAMPAIGN_NAME + '"')
+      .get()
+      .next();
+
+  // Create the search audience.
+  var searchAudience = adGroup.targeting()
+      .newUserListBuilder()
+      .withAudienceId(AUDIENCE_LIST_ID)
+      .withBidModifier(1.3)
+      .build()
+      .getResult();
+
+  // Display the results.
+  Logger.log('Search audience with name = %s and ID = %s was added to ad ' +
+      'group ID: %s', searchAudience.getName(),
+      searchAudience.getId().toFixed(0), adGroup.getId().toFixed(0));
+}
